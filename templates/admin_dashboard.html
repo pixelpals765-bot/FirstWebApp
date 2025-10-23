@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- Admin Dashboard Header with Dropdown -->
+<div style="background:#003366;color:white;padding:1rem;margin:-2rem -2rem 1rem -2rem;display:flex;justify-content:space-between;align-items:center;">
+  <div>
+    <h1 style="margin:0;">Admin Dashboard</h1>
+    <p style="margin:0;">Manage Users and System Settings</p>
+  </div>
+
+  <!-- Dropdown Menu -->
+  <div class="dropdown">
+    <button class="dropbtn">Menu ▾</button>
+    <div class="dropdown-content">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+      <a href="#">Settings</a>
+      <a href="#">Reports</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </div>
+</div>
+
+<!-- User Table -->
+<table>
+  <thead>
+    <tr><th>ID</th><th>Username</th><th>Action</th></tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user['id'] }}</td>
+      <td>{{ user['username'] }}</td>
+      <td>
+        {% if user['username'] != 'admin' %}
+          <a href="{{ url_for('delete_user', user_id=user['id']) }}" class="btn"
+             onclick="return confirm('Delete this user?');">Delete</a>
+        {% else %}
+          <span style="color: gray;">Protected</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Footer -->
+<footer style="background:#003366;color:white;text-align:center;padding:1rem;margin-top:2rem;">
+  <p>Admin Control Panel © 2025</p>
+</footer>
+
+<!-- Dropdown Styles -->
+<style>
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .dropbtn {
+    background-color: #0055aa;
+    color: white;
+    padding: 10px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .dropbtn:hover {
+    background-color: #004080;
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+  }
+  .dropdown-content a {
+    color: #003366;
+    padding: 10px 14px;
+    text-decoration: none;
+    display: block;
+  }
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+</style>
+
+{% endblock %}
